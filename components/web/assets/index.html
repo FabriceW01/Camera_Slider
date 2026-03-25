@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Kamera Slider</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header class="app-header">
+        <div>
+            <h1>Kamera Slider</h1>
+            <p>ESP32-C3 access-point motion controller</p>
+        </div>
+        <div class="header-actions">
+            <button id="homeButton" class="primary">Home</button>
+            <button id="stopButton" class="danger">Stop</button>
+        </div>
+    </header>
+
+    <main class="layout">
+        <section class="panel">
+            <h2>Dashboard</h2>
+            <div class="status-grid">
+                <div><span>Connection</span><strong id="statusConnection">Connecting...</strong></div>
+                <div><span>State</span><strong id="statusState">-</strong></div>
+                <div><span>Mode</span><strong id="statusMode">-</strong></div>
+                <div><span>Homed</span><strong id="statusHomed">-</strong></div>
+                <div><span>Position</span><strong id="statusPosition">-</strong></div>
+                <div><span>Limits</span><strong id="statusLimits">-</strong></div>
+            </div>
+            <div class="status-note" id="statusLastError">No recent errors.</div>
+        </section>
+
+        <section class="panel">
+            <h2>Manual Control</h2>
+            <label class="inline-field">
+                <span>Jog speed</span>
+                <input id="jogSpeed" type="range" min="100" max="2400" step="50" value="1200">
+                <strong id="jogSpeedValue">1200 steps/s</strong>
+            </label>
+            <div class="button-row">
+                <button id="jogLeftButton">Jog Left</button>
+                <button id="jogRightButton">Jog Right</button>
+            </div>
+            <div class="touch-strip">
+                <div class="touch-strip__label">Touch strip</div>
+                <div id="jogPad" class="touch-strip__pad">
+                    <div id="jogPadIndicator" class="touch-strip__indicator"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>A/B Control</h2>
+            <div class="button-row">
+                <button id="setAButton">Set A</button>
+                <button id="setBButton">Set B</button>
+                <button id="goAButton">Go To A</button>
+                <button id="goBButton">Go To B</button>
+            </div>
+            <label class="inline-field">
+                <span>Repeat mode</span>
+                <select id="abRepeatMode">
+                    <option value="none">Once</option>
+                    <option value="loop">Loop</option>
+                    <option value="ping_pong">Ping-Pong</option>
+                </select>
+            </label>
+            <button id="runAbButton" class="primary full-width">Run A to B</button>
+        </section>
+
+        <section class="panel">
+            <h2>Keyframe Editor</h2>
+            <div id="keyframes" class="keyframes"></div>
+            <div class="button-row">
+                <button id="addKeyframeButton">Add Keyframe</button>
+                <button id="loadDemoKeyframesButton">Load Demo</button>
+            </div>
+            <label class="inline-field">
+                <span>Repeat mode</span>
+                <select id="programRepeatMode">
+                    <option value="none">Once</option>
+                    <option value="loop">Loop</option>
+                    <option value="ping_pong">Ping-Pong</option>
+                </select>
+            </label>
+            <div class="button-row">
+                <button id="saveProgramButton">Upload Program</button>
+                <button id="runProgramButton" class="primary">Run Program</button>
+                <button id="pauseProgramButton">Pause</button>
+                <button id="resumeProgramButton">Resume</button>
+                <button id="stopProgramButton">Stop Program</button>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Settings</h2>
+            <form id="settingsForm">
+                <div class="form-grid">
+                    <label>
+                        <span>Max speed (steps/s)</span>
+                        <input id="cfgMaxSpeed" type="number" min="1" step="1">
+                    </label>
+                    <label>
+                        <span>Acceleration (steps/s²)</span>
+                        <input id="cfgAcceleration" type="number" min="1" step="1">
+                    </label>
+                    <label>
+                        <span>Jog speed (steps/s)</span>
+                        <input id="cfgJogSpeed" type="number" min="1" step="1">
+                    </label>
+                    <label>
+                        <span>Homing speed (steps/s)</span>
+                        <input id="cfgHomingSpeed" type="number" min="1" step="1">
+                    </label>
+                    <label>
+                        <span>Slow homing speed (steps/s)</span>
+                        <input id="cfgHomingSlowSpeed" type="number" min="1" step="1">
+                    </label>
+                    <label>
+                        <span>Backoff (steps)</span>
+                        <input id="cfgBackoff" type="number" min="1" step="1">
+                    </label>
+                    <label>
+                        <span>Debounce (ms)</span>
+                        <input id="cfgDebounce" type="number" min="1" step="1">
+                    </label>
+                    <label>
+                        <span>Slider travel (mm)</span>
+                        <input id="cfgTravel" type="number" min="1" step="0.1">
+                    </label>
+                    <label>
+                        <span>Steps per mm</span>
+                        <input id="cfgStepsPerMm" type="number" min="0.1" step="0.001">
+                    </label>
+                    <label>
+                        <span>Home side</span>
+                        <select id="cfgHomeSide">
+                            <option value="left">Left</option>
+                            <option value="right">Right</option>
+                        </select>
+                    </label>
+                    <label class="checkbox-field">
+                        <span>Invert direction output</span>
+                        <input id="cfgInvertDirection" type="checkbox">
+                    </label>
+                </div>
+                <button class="primary full-width" type="submit">Apply Runtime Settings</button>
+            </form>
+            <div class="read-only">
+                <h3>Read-only AP Settings</h3>
+                <p id="apSettings">Loading AP settings...</p>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Status / Debug</h2>
+            <pre id="debugOutput">Waiting for status...</pre>
+        </section>
+    </main>
+
+    <template id="keyframeRowTemplate">
+        <div class="keyframe-row">
+            <label>
+                <span>Position (mm)</span>
+                <input class="keyframe-position" type="number" step="0.1" min="0">
+            </label>
+            <label>
+                <span>Time (ms)</span>
+                <input class="keyframe-time" type="number" step="1" min="0">
+            </label>
+            <button class="remove-keyframe" type="button">Remove</button>
+        </div>
+    </template>
+
+    <script src="/app.js"></script>
+</body>
+</html>

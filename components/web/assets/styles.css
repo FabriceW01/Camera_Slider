@@ -1,0 +1,239 @@
+:root {
+    color-scheme: light;
+    --bg: #f4f6f7;
+    --panel: #ffffff;
+    --panel-border: #d5dde1;
+    --text: #162227;
+    --muted: #5a6a71;
+    --accent: #145a64;
+    --accent-strong: #0b3f46;
+    --danger: #a63636;
+    --danger-strong: #7b2020;
+    --shadow: 0 10px 24px rgba(18, 34, 39, 0.08);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    background:
+        radial-gradient(circle at top right, rgba(20, 90, 100, 0.12), transparent 26rem),
+        linear-gradient(180deg, #f8fbfc 0%, var(--bg) 60%);
+    color: var(--text);
+}
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: rgba(255, 255, 255, 0.84);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(213, 221, 225, 0.9);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+}
+
+.app-header h1 {
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+.app-header p {
+    margin: 0.2rem 0 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.header-actions,
+.button-row {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.layout {
+    display: grid;
+    gap: 1rem;
+    padding: 1rem;
+    max-width: 60rem;
+    margin: 0 auto;
+}
+
+.panel {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: var(--shadow);
+}
+
+.panel h2,
+.panel h3 {
+    margin-top: 0;
+}
+
+.status-grid,
+.form-grid {
+    display: grid;
+    gap: 0.9rem;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+}
+
+.status-grid span,
+label span {
+    display: block;
+    color: var(--muted);
+    font-size: 0.86rem;
+    margin-bottom: 0.35rem;
+}
+
+.status-grid strong {
+    font-size: 1rem;
+}
+
+.status-note {
+    margin-top: 1rem;
+    padding: 0.8rem;
+    border-radius: 0.8rem;
+    background: #eef4f6;
+    color: var(--accent-strong);
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    border: 0;
+    border-radius: 0.8rem;
+    padding: 0.8rem 1rem;
+    background: #e8eef0;
+    color: var(--text);
+}
+
+button.primary {
+    background: var(--accent);
+    color: #fff;
+}
+
+button.danger {
+    background: var(--danger);
+    color: #fff;
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+button.full-width {
+    width: 100%;
+}
+
+input,
+select {
+    width: 100%;
+    border: 1px solid var(--panel-border);
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    background: #fff;
+    color: var(--text);
+}
+
+.inline-field {
+    display: grid;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.checkbox-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.checkbox-field input {
+    width: auto;
+}
+
+.touch-strip {
+    margin-top: 1rem;
+}
+
+.touch-strip__label {
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+}
+
+.touch-strip__pad {
+    position: relative;
+    height: 4rem;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(166, 54, 54, 0.18), rgba(20, 90, 100, 0.2));
+    border: 1px solid var(--panel-border);
+    overflow: hidden;
+}
+
+.touch-strip__indicator {
+    position: absolute;
+    top: 0.25rem;
+    bottom: 0.25rem;
+    width: 2.25rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(11, 63, 70, 0.15);
+    left: calc(50% - 1.125rem);
+    transition: left 0.08s linear;
+}
+
+.keyframes {
+    display: grid;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.keyframe-row {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: 1fr 1fr auto;
+    align-items: end;
+    padding: 0.85rem;
+    border-radius: 0.9rem;
+    background: #f7fafb;
+    border: 1px solid #e2eaed;
+}
+
+.read-only {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e2eaed;
+}
+
+pre {
+    margin: 0;
+    overflow: auto;
+    padding: 0.8rem;
+    border-radius: 0.9rem;
+    background: #132126;
+    color: #d8eef2;
+    min-height: 10rem;
+}
+
+@media (max-width: 720px) {
+    .app-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .keyframe-row {
+        grid-template-columns: 1fr;
+    }
+}
